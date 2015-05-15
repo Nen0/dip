@@ -1,5 +1,5 @@
 'use strict';
-angular.module('dipApp').config(function ($urlRouterProvider, $stateProvider, $httpProvider) {
+angular.module('dipApp').config(function ($urlRouterProvider, $stateProvider, $httpProvider /*, $authProvider, API_URL*/ ) {
 
 		$urlRouterProvider.otherwise('/');
 
@@ -32,6 +32,26 @@ angular.module('dipApp').config(function ($urlRouterProvider, $stateProvider, $h
 
 			});
 
+		/*$authProvider.google({
+			clientId: '803487178833-qfmrpj8pm821tdrn0l671t57cqmr366j.apps.googleusercontent.com',
+			url: API_URL + 'auth/google'
+		})*/
+
+
 		$httpProvider.interceptors.push('authInterceptor');
 	})
-	.constant('API_URL', 'http://localhost:3000/');
+	.constant('API_URL', 'http://localhost:3000/')
+	.run(function ($window) {
+
+		var params = $window.location.search.substring(1);
+
+		if (params && $window.opener && $window.opener.location.origin === $window.location.origin) {
+			var pair = params.split('=');
+			var code = decodeURIComponent(pair[1]);
+
+			$window.opener.postMessage(code, $window.location.origin);
+
+
+		}
+
+	});

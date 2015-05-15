@@ -9,4 +9,4 @@
  * Main module of the application.
  */
 angular
-    .module('dipApp', ['ui.router', 'ngAnimate']);
+	.module('dipApp', ['ui.router', 'ngAnimate', 'satellizer']);
